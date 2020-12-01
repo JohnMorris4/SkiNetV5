@@ -8,7 +8,15 @@ namespace INFRASTRUCTURE.Data.Config
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
-            throw new System.NotImplementedException();
+            builder.Property(p => p.Id).IsRequired();
+            builder.Property(p => p.Name).IsRequired().HasMaxLength(100);
+            builder.Property(p => p.Description).IsRequired().HasMaxLength(180);
+            builder.Property(p => p.Price).HasColumnType("decimal(18,2)");
+            builder.Property(p => p.PictureUrl).IsRequired();
+            builder.HasOne(b => b.ProductBrand).WithMany()
+                .HasForeignKey(P => P.ProductBrandId);
+            builder.HasOne(T => T.ProductType).WithMany()
+                .HasForeignKey(P => P.ProductTypeId);
         }
     }
 }
